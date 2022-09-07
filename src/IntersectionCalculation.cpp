@@ -15,7 +15,7 @@ bool Intersect::IntersectObbWithLine(const OBB& obb, const Line& line)
     return false;
 }
 
-bool Intersect::IntersectObbWithTriangle(const OBB& obb, const Triangle& triagle)
+bool Intersect::IntersectTriangleWithTriangle(const Triangle& obb, const Triangle& triagle)
 {
     /// TODO 实现步骤 
     // 以OBB创建坐标系
