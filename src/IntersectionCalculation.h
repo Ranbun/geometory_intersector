@@ -12,6 +12,9 @@ public:
     static bool IntersectObbWithLine(const OBB& obb, const Line& line);
     static bool IntersectTriangleWithTriangle(const Triangle& obb, const Triangle& triagle);
 
+private:
+    static bool IntersectObbWithRay(const OBB& obb, Line::Ray& ray);
+
 };
 
 #endif // !__INTERSECTION_CALCULATION_H__

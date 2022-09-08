@@ -3,12 +3,12 @@
 
 #include <iostream>
 #include <glm/glm.hpp>
-#include <glm/ext/vector_float3.hpp>
 #include <glm/vec3.hpp>
+#include <glm/matrix.hpp>
 
 using glm::vec3;
 
-struct OBB
+struct OBB  ///< ÓÒÊÖÏµ
 {
     OBB(const vec3 & pos,const vec3 & size)
         : m_pos(pos)
@@ -27,6 +27,11 @@ struct OBB
     vec3 m_u{1,0,0};     ///< x 
     vec3 m_v{0,1,0};     ///< y 
     vec3 m_w{0,0,1};     ///< z 
+
+    glm::mat4 m_trans;
+    glm::mat4 m_rotate;
+
+
 
 };
 

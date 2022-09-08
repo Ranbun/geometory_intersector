@@ -27,18 +27,18 @@ struct Line
 
         }
         
-        const glm::vec3 & m_begin;
-        const glm::vec3 m_dir;
+        glm::vec3 m_begin;
+        glm::vec3 m_dir;
 
     };
 
 
-    Ray asRayBegin2End()
+    Ray asRayBegin2End() const
     {
         return std::move(Ray(m_begin,m_end - m_begin));
     }
 
-    Ray asRayEnd2Begin()
+    Ray asRayEnd2Begin() const
     {
         return std::move(Ray(m_end,  m_begin - m_end));
     }
