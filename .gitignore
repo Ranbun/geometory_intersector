@@ -6,4 +6,10 @@
 out 
 out/
 
+.idea
+idea/
+
+cmake-build-debug
+cmake-build-debug/
+
 
