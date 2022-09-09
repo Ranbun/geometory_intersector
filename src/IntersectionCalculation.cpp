@@ -1,7 +1,6 @@
 #include "IntersectionCalculation.h"
 #include <glm/mat4x4.hpp>
 #include <glm/gtc/matrix_transform.hpp>  
-#include <iostream>
 #include <cmath>
 
 
@@ -37,11 +36,11 @@ bool Intersect::IntersectObbWithLine(const OBB& obb, const Line& line)
     auto res_1 = Intersect::IntersectObbWithRay(coord, ray_1);
     auto res_2 = Intersect::IntersectObbWithRay(coord, ray_2);
 
-    return (res_1 || res_2) ? true : false;
+    return (res_1 || res_2);
 }
 
 /// 三角形与三角形的求交 
-bool Intersect::IntersectTriangleWithTriangle(const Triangle& obb, const Triangle& triagle)
+bool Intersect::IntersectTriangleWithTriangle(const Triangle& obb, const Triangle& triangle)
 {
     /// TODO 实现步骤 
     // 计算相交 
@@ -71,7 +70,7 @@ bool Intersect::IntersectObbWithRay(const OBB& obb, Line::Ray& ray)
 #endif 
 
     auto delta = obb.m_pos - ray.m_begin;
-    float t1{ 0 }, t2{0}, t3{ 0 }, t4{ 0 }, t5{ 0 }, t6{ 0 };
+    float t1, t2, t3, t4, t5, t6;
 
     {
         float e = glm::dot(obb.m_u, delta);
@@ -122,7 +121,7 @@ bool Intersect::IntersectObbWithRay(const OBB& obb, Line::Ray& ray)
     auto minT = std::min(std::min(t1, t3), t5);
     auto maxT = std::min(std::min(t2, t4), t6);
 
-    return minT < maxT ? true : false;
+    return minT < maxT;
 }
 
 

@@ -16,9 +16,9 @@ int main()
 
 
     /// TODO OBB 与线的求交
-    bool obbwidthline = Intersect::IntersectObbWithLine(obb, line);
+    auto obbwidthline = Intersect::IntersectObbWithLine(obb, line);
     /// OBB 与 三角形的求交
-    bool obbwidthtriangle = Intersect::IntersectTriangleWithTriangle(triangle_1, triangle_2);
+    auto obbwidthtriangle = Intersect::IntersectTriangleWithTriangle(triangle_1, triangle_2);
 
     return 0;
 }
