@@ -16,9 +16,20 @@ int main()
 
 
     /// TODO OBB 与线的求交
-    auto obbwidthline = Intersect::IntersectObbWithLine(obb, line);
+    const auto obbwidthline = Intersect::IntersectObbWithLine(obb, line);
+
+    if(obbwidthline)
+    {
+        std::cout<< "OBB With Line Intersect"<< std::endl;
+    }
+
     /// OBB 与 三角形的求交
-    auto obbwidthtriangle = Intersect::IntersectTriangleWithTriangle(triangle_1, triangle_2);
+    const auto obbwidthtriangle = Intersect::IntersectObbWithTriangle(triangle_1, triangle_2);
+
+    if(obbwidthtriangle)
+    {
+        std::cout<< "OBB With Triangle Intersect"<< std::endl;
+    }
 
     return 0;
 }

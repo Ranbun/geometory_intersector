@@ -10,7 +10,7 @@ class Intersect
 {
 public:
     static bool IntersectObbWithLine(const OBB& obb, const Line& line);
-    static bool IntersectTriangleWithTriangle(const Triangle& obb, const Triangle& triangle);
+    static bool IntersectObbWithTriangle(const Triangle& obb, const Triangle& triangle);
 
 private:
     static bool IntersectObbWithRay(const OBB& obb, Line::Ray& ray);

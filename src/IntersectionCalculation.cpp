@@ -40,7 +40,7 @@ bool Intersect::IntersectObbWithLine(const OBB& obb, const Line& line)
 }
 
 /// 三角形与三角形的求交 
-bool Intersect::IntersectTriangleWithTriangle(const Triangle& obb, const Triangle& triangle)
+bool Intersect::IntersectObbWithTriangle(const Triangle& obb, const Triangle& triangle)
 {
     /// TODO 实现步骤 
     // 计算相交 
