@@ -1,6 +1,10 @@
 #include "IntersectionCalculation.h"
 #include <glm/mat4x4.hpp>
 #include <glm/gtc/matrix_transform.hpp>  
+#include "axisalignedbox.h"
+#include "triangle.h"
+#include <array>
+#include <vector>
 #include <cmath>
 
 
@@ -40,7 +44,7 @@ bool Intersect::IntersectObbWithLine(const OBB& obb, const Line& line)
 }
 
 /// 三角形与三角形的求交 
-bool Intersect::IntersectObbWithTriangle(const Triangle& obb, const Triangle& triangle)
+bool Intersect::IntersectObbWithTriangle(const OBB& obb, const Triangle& triangle)
 {
     /// TODO 实现步骤 
     // 计算相交 
@@ -122,6 +126,78 @@ bool Intersect::IntersectObbWithRay(const OBB& obb, Line::Ray& ray)
     auto maxT = std::min(std::min(t2, t4), t6);
 
     return minT < maxT;
+}
+
+bool Intersect::IntersectAABBWithTriangle(const AABB &aabb, const Triangle &triangle)
+{
+    // move AABB ro  origin
+    auto box = aabb;
+    auto trans = glm::mat4(1.0);
+    trans = glm::translate(trans,- box.m_center);
+    box.updateTransfrom(trans);
+
+    auto tri = triangle;
+    tri.updateTransform(trans);
+
+    std::array<glm::vec3,13> projectAxis;
+
+    std::array<glm::vec3,3> aabbAxisVector;  /// 记录AABB盒子的三个面的法线
+    {
+        aabbAxisVector[0] = glm::vec3(1.0f, 0.0, 0.0);
+        aabbAxisVector[1] = glm::vec3(0.0f, 1.0, 0.0);
+        aabbAxisVector[2] = glm::vec3(0.0f, 0.0, 1.0);
+    }
+
+    std::array<glm::vec3,3> triEdgeVector;  /// 记录AABB盒子的三个面的法线
+    {
+        triEdgeVector[0] = tri.m_p2 - tri.m_p1;
+        triEdgeVector[1] = tri.m_p3 - tri.m_p2;
+        triEdgeVector[2] = tri.m_p1 - tri.m_p3;
+    }
+
+    auto triangleNormal = tri.m_normal;
+
+    std::array<glm::vec3,3> aabbFaceNormal;
+    {
+        aabbFaceNormal[0] = glm::vec3(1.0f, 0.0, 0.0);
+        aabbFaceNormal[1] = glm::vec3(0.0f, 1.0, 0.0);
+        aabbFaceNormal[2] = glm::vec3(0.0f, 0.0, 1.0);
+    }
+
+    // 计算 13根 投影轴
+    //    for(auto it: std::vector<int>{0,1,2})
+    for(const auto & i: {0,1,2})
+    {  /// AABB 边
+        for(const auto & j: {0,1,2})
+        { /// triangle 边
+            projectAxis[i*3 + j] = glm::normalize(glm::cross(aabbAxisVector[i], triEdgeVector[j]));
+        }
+    }
+    projectAxis[9] = triangleNormal;
+    for(const auto & index: {0,1,2})
+    {
+        projectAxis[10 + index] = aabbFaceNormal[index];
+    }
+
+    // 相交计算
+    for(const auto & it: projectAxis)
+    {
+        auto p_0 = glm::dot(it,tri.m_p1);
+        auto p_1 = glm::dot(it,tri.m_p2);
+        auto p_2 = glm::dot(it,tri.m_p3);
+
+        const auto half = glm::vec3(0.5 * aabb.m_size.x,0.5 * aabb.m_size.y,0.5 * aabb.m_size.z);
+        auto r = half.x * std::abs(dot(aabbAxisVector[0],it)) +
+                half.y * std::abs(dot(aabbAxisVector[1],it)) +
+                half.z * std::abs(dot(aabbAxisVector[2],it));
+        auto min_p = std::min(std::min(p_0,p_1),p_2);
+        auto max_p = std::max(std::max(p_0,p_1),p_2);
+
+        if(min_p > r || max_p < -r)
+            return false;
+    }
+
+    return true;
 }
 
 

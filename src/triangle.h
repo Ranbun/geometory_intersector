@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <glm/glm.hpp>
+#include <glm/vec4.hpp>
 
 
 struct Triangle
@@ -35,8 +36,19 @@ struct Triangle
 
         auto v1 = p3 - p1;
         auto v2 = p2 - p1;
-        auto normal = glm::normalize(glm::cross(v2, v1));
+        m_normal = glm::normalize(glm::cross(v2, v1));
 
+    }
+
+    void updateTransform(glm::mat4 & model)
+    {
+        m_p1 = vec3(model * glm::vec4(m_p1,1.0));
+        m_p2 = vec3(model * glm::vec4(m_p2,1.0));
+        m_p3 = vec3(model * glm::vec4(m_p3,1.0));
+
+        auto v1 = m_p3 - m_p1;
+        auto v2 = m_p2 - m_p1;
+        m_normal = glm::normalize(glm::cross(v2, v1));
     }
 
     glm::vec3 m_p1;

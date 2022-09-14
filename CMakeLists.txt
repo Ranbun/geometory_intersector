@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.15)
 project(obb_intersect)
 set(target_ intersect)
 
+set(CMAKE_CXX_STANDARD 17)
 
 find_package(glm CONFIG REQUIRED)
 
@@ -10,7 +11,9 @@ set(headerFiles
    src/obb.h
    src/IntersectionCalculation.h
    src/line.h
-   src/triangle.h)
+   src/triangle.h
+   src/axisalignedbox.h
+)
 
 set(sourceFiles 
     main.cpp
