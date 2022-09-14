@@ -6,6 +6,8 @@
 
 struct AABB
 {
+    AABB() = default;
+
     explicit AABB(const glm::vec3 & center,const glm::vec3 & size)
         : m_center(center)
         , m_size(size)
@@ -15,15 +17,11 @@ struct AABB
 
     void updateTransfrom(const glm::mat4 & model)
     {
-        m_center = vec3( model * glm::vec4(m_center,1.0));
+        m_center = glm::vec3( model * glm::vec4(m_center,1.0));
     }
 
     glm::vec3 m_center;
     glm::vec3 m_size;
 };
-
-
-
-
 
 #endif 
