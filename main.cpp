@@ -11,7 +11,7 @@
 int main()
 {
     OBB obb(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.5f, 0.5f, 0.5f));
-    Line line(glm::vec3(-3.0, 0, 0), glm::vec3(3.0, 0.0, 0.0));
+    Line line(glm::vec3(0.6, 0, 0), glm::vec3(0.6, 0.0, -1.0));
     Triangle triangle_1(glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0), glm::vec3(-1.0, 0.0, 0.0));
     Triangle triangle_2(glm::vec3(1.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0), glm::vec3(-1.0, 0.0, 0.0));
     AABB aabb(glm::vec3(10,0,0),glm::vec3(1.0,1.0,1.0));
