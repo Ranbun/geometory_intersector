@@ -38,7 +38,7 @@ struct OBB
     vec3 m_v{0,1,0};     ///< y 
     vec3 m_w{0,0,1};     ///< z 
 
-    glm::mat4 m_trans;
+    glm::mat4 m_trans;                   
     glm::mat4 m_rotate;
 
 

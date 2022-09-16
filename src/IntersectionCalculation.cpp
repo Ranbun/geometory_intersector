@@ -6,12 +6,13 @@
 #include <array>
 #include <vector>
 #include <cmath>
+#include <float.h>
 
 
 /// OBB 与 线的求交 
 bool Intersect::IntersectObbWithLine(const OBB& obb, const Line& line)
 {
-
+#if 0 
     auto ray_1 = line.asRayBegin2End();
     auto ray_2 = line.asRayEnd2Begin();
 
@@ -41,91 +42,133 @@ bool Intersect::IntersectObbWithLine(const OBB& obb, const Line& line)
     auto res_2 = Intersect::IntersectObbWithRay(coord, ray_2);
 
     return (res_1 || res_2);
-}
-
-/// 三角形与三角形的求交 
-bool Intersect::IntersectObbWithTriangle(const OBB& obb, const Triangle& triangle)
-{
-    /// TODO 实现步骤 
-    // 计算相交 
-
-
-    return false;
-}
-
-bool Intersect::IntersectObbWithRay(const OBB& obb, Line::Ray& ray)
-{
-
-#if  0
-    /// TODO 实现步骤
-    // 将Ray转换到 OBB的坐标系下 
-
-    auto trans = glm::translate(glm::mat4(1.0), - ray.m_begin);
-    auto rayBegin = trans * glm::vec4(ray.m_begin,1.0);
-    rayBegin = obb.m_rotate * rayBegin;
-    rayBegin *= glm::translate(trans, ray.m_begin);
-    rayBegin *= obb.m_trans;
-    ray.m_begin = glm::vec3(rayBegin);
-    ray.m_dir *= obb.m_rotate;
-    
-    // 将OBB & Line 转换到以OBB创建的坐标系下 
-    // 分别计算线的两个方向的射线是否与OBB相交 
-    // 只要有一个方向发生相交 则相交 
 #endif 
 
+    OBB coord(obb.m_pos, obb.m_size, obb.m_u, obb.m_v, obb.m_w);
+    auto ray = line.asRay();
+    auto res = Intersect::IntersectObbWithRay(coord, ray);
+    return  res;
+}
+    
+bool Intersect::IntersectObbWithRay(const OBB& obb, Ray & ray)
+{
+
     auto delta = obb.m_pos - ray.m_begin;
-    float t1, t2, t3, t4, t5, t6;
+    float t1, t2;
+    double minT = DBL_MIN, maxT = DBL_MAX;
 
     {
-        float e = glm::dot(obb.m_u, delta);
+        float e = glm::dot(delta, obb.m_u);
         float f = glm::dot(ray.m_dir, obb.m_u);
-
-        t1 = (e - (obb.m_pos + obb.m_u).x) / f;
-        t2 = (e + (obb.m_pos + obb.m_u).x) / f;
-
-        if (t1 > t2)
+        if (std::abs(f) > 1e-20)       ///< 是否平行于平面
         {
-            auto temp = t1;
-            t1 = t2;
-            t2 = temp;
+            t1 = (e + obb.m_size.x / 2.0) / f;
+            t2 = (e - obb.m_size.x / 2.0) / f;
+            if (t1 > t2)
+            {
+                auto temp = t1;
+                t1 = t2;
+                t2 = temp;
+            }
+
+            if (t1 > minT)
+            {
+                minT = t1;
+            }
+            if (t2 < maxT)
+            {
+                maxT = t2;
+            }
+            if (minT > maxT)
+            {
+                return false;
+            }
+            if (maxT < 0)
+            {
+                return false;
+            }
+        }
+        else if (-e - obb.m_size.x / 2.0 > 0 || -e + obb.m_size.x / 2.0 < 0)
+        {
+            return false;
         }
     }
 
     {
-        float e = glm::dot(obb.m_v, delta);
+        float e = glm::dot(delta, obb.m_v);
         float f = glm::dot(ray.m_dir, obb.m_v);
-
-        t3 = (e - (obb.m_pos + obb.m_v).y) / f;
-        t4 = (e + (obb.m_pos + obb.m_v).y) / f;
-
-        if (t3 > t4)
+        if (std::abs(f) > 1e-20)
         {
-            auto temp = t3;
-            t3 = t4;
-            t4 = temp;
+            t1 = (e + obb.m_size.y / 2.0) / f;
+            t2 = (e - obb.m_size.y / 2.0) / f;
+            if (t1 > t2)
+            {
+                auto temp = t1;
+                t1 = t2;
+                t2 = temp;
+            }
+
+            if (t1 > minT)
+            {
+                minT = t1;
+            }
+            if (t2 < maxT)
+            {
+                maxT = t2;
+            }
+            if (minT > maxT)
+            {
+                return false;
+            }
+            if (maxT < 0)
+            {
+                return false;
+            }
+        }
+        else if (-e - obb.m_size.y / 2.0 > 0 || -e + obb.m_size.y / 2.0 < 0)
+        {
+            return false;
         }
     }
 
     {
-        float e = glm::dot(obb.m_w, delta);
+        float e = glm::dot(delta, obb.m_w);
         float f = glm::dot(ray.m_dir, obb.m_w);
-
-        t5 = (e - (obb.m_pos + obb.m_w).z) / f;
-        t6 = (e + (obb.m_pos + obb.m_w).z) / f;
-
-        if (t5 > t6)
+        if (std::abs(f) > 1e-20)
         {
-            auto temp = t5;
-            t5 = t6;
-            t6 = temp;
+            t1 = (e + obb.m_size.z / 2.0) / f;
+            t2 = (e - obb.m_size.z / 2.0) / f;
+            if (t1 > t2)
+            {
+                auto temp = t1;
+                t1 = t2;
+                t2 = temp;
+            }
+
+            if (t1 > minT)
+            {
+                minT = t1;
+            }
+            if (t2 < maxT)
+            {
+                maxT = t2;
+            }
+            if (minT > maxT)
+            {
+                return false;
+            }
+            if (maxT < 0)
+            {
+                return false;
+            }
+        }
+        else if (-e - obb.m_size.z / 2.0 > 0 || -e + obb.m_size.z / 2.0 < 0)
+        {
+            return false;
         }
     }
 
-
-    auto minT = std::min(std::min(t1, t3), t5);
-    auto maxT = std::min(std::min(t2, t4), t6);
-
-    return minT < maxT;
+    return true;
 }
 
 bool Intersect::IntersectAABBWithTriangle(const AABB &aabb, const Triangle &triangle)

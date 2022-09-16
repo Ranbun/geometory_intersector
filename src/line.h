@@ -4,6 +4,17 @@
 #include <iostream>
 #include <glm/glm.hpp>
 
+struct Ray
+{
+    Ray(const glm::vec3& begin, const glm::vec3& dir)
+        : m_begin(begin)
+        , m_dir(glm::normalize(dir))
+    {}
+
+    glm::vec3 m_begin;
+    glm::vec3 m_dir;
+
+};
 
 struct Line
 {
@@ -17,21 +28,6 @@ struct Line
     glm::vec3 m_begin;
     glm::vec3 m_end;
 
-    struct Ray
-    {
-        Ray(const glm::vec3 & begin, const glm::vec3 & dir)
-            : m_begin(begin)
-            , m_dir(glm::normalize(dir))
-
-        {
-
-        }
-        
-        glm::vec3 m_begin;
-        glm::vec3 m_dir;
-
-    };
-
 
     Ray asRayBegin2End() const
     {
@@ -41,6 +37,11 @@ struct Line
     Ray asRayEnd2Begin() const
     {
         return std::move(Ray(m_end,  m_begin - m_end));
+    }
+
+    Ray asRay() const
+    {
+        return std::move(Ray(m_begin, m_end - m_begin));
     }
 
 };
