@@ -13,7 +13,7 @@ struct OBB
 ///< 右手系
 {
     OBB(const vec3 & pos,const vec3 & size)
-        : m_pos(pos)
+        : m_center(pos)
         , m_size(size)
     {
         m_aabb.m_center = pos;
@@ -21,7 +21,7 @@ struct OBB
     }
 
     OBB(const vec3& pos, const vec3& size, const vec3& u, const vec3& v, const vec3& w)
-        : m_pos(pos)
+        : m_center(pos)
         , m_size(size) 
         , m_u(u)
         , m_v(v)
@@ -31,7 +31,7 @@ struct OBB
         m_aabb.m_size = size;
     }
 
-    vec3 m_pos{0,0,0};   ///< pos 
+    vec3 m_center{0, 0, 0};   ///< pos
     vec3 m_size{ 0.5,0.5,0.5 };  ///< 长宽高 x = 长 y = 宽 z = 高
     AABB m_aabb;
     vec3 m_u{1,0,0};     ///< x

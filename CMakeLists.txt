@@ -14,7 +14,7 @@ find_package(glm CONFIG REQUIRED)
 
 set(headerFiles 
    src/obb.h
-   src/IntersectionCalculation.h
+        src/Intersector.h
    src/line.h
    src/triangle.h
    src/axisalignedbox.h
@@ -22,7 +22,7 @@ set(headerFiles
 
 set(sourceFiles 
     main.cpp
-    src/IntersectionCalculation.cpp
+        src/Intersector.cpp
 )
 
 

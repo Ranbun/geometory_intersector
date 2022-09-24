@@ -13,9 +13,11 @@ class Intersect
 public:
     static bool IntersectObbWithLine(const OBB& obb, const Line& line);
     static bool IntersectAABBWithTriangle(const AABB & obb, const Triangle& triangle);
+    static bool intersectObbWithObb(OBB &first, OBB &second);
 
 private:
     static bool IntersectObbWithRay(const OBB& obb, Ray & ray);
+    static bool computerOBBIntersecte(OBB first, OBB second);
 
 };
 

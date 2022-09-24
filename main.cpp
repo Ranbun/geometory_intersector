@@ -1,6 +1,6 @@
 #include <iostream>
 #include <glm/vec3.hpp>
-#include "src/IntersectionCalculation.h"
+#include "src/Intersector.h"
 #include "src/line.h"
 #include "src/obb.h"
 #include "src/triangle.h"
@@ -16,7 +16,7 @@ int main()
     Triangle triangle_2(glm::vec3(1.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0), glm::vec3(-1.0, 0.0, 0.0));
     AABB aabb(glm::vec3(10,0,0),glm::vec3(1.0,1.0,1.0));
 
-    /// TODO OBB ÓëÏßµÄÇó½»
+    /// TODO OBB ï¿½ï¿½ï¿½ßµï¿½ï¿½ï¿½
 #if  1
     const auto obbwidthline = Intersect::IntersectObbWithLine(obb, line);
 
@@ -31,7 +31,7 @@ int main()
 #endif
 
 #if 0
-    /// OBB Óë Èý½ÇÐÎµÄÇó½»
+    /// OBB ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Îµï¿½ï¿½ï¿½
     const auto obbwidthtriangle = Intersect::IntersectObbWithTriangle(triangle_1, triangle_2);
 
     if(obbwidthtriangle)
